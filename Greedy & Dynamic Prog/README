@@ -1,0 +1,89 @@
+VIJAEAC CRISTIAN-OCTAVIAN 325CB 
+
+TEMA 1-PROIECTAREA ALGORITMILOR
+
+PROBLEMA 1:
+	Pentru rezolvarea acestei probleme,mai intai a trebuie sa fac citirea din fisier,dupa care sa construiesc metoda care facea rezolvarea efectiva a cerintei
+si apoi sa scriu rezultatul in alt fisier.Pentru indeplinirea acestor task-uri am urmat acesti pasi:
+	1)Citirea din fisier am facut-o folosind BufferedReader(initial am folost Scanner insa am observat o diferenta destul de semnificativa intre timpii de rulare)
+		-citeam de pe prima linia numarul de cuvinte
+		-citeam fiecare linie si memoram String-ul gasit intr-o variabila auxiliara
+		-fiecare litera din String-ul gasit mai sus o extrageam si o inseram intr-o lista de caractere(ArrayList<Character>)
+		-pentru fiecare lista de acest tip,continand fiecare cuvant,apelam metoda "check" care calcula efectiv numarul min de mutari pentru a verifica daca 			String-ul nostru este sau nu un palindrom
+
+	2)Rezolvarea efectiva a cerintei-pentru aceasta am folost o metoda "check" care primea ca parametru o lista de litere care formau cuvantul nostru si intorcea
+					numarul minim de mutari cautat de noi
+					-algoritmul ruleaza cat timp numarul de litere este >1(daca ramanem cu o litera sau chiar niciuna,inseamna ca am eliminat 						toate duplicatele si am reusit sa aratam daca String-ul poate sau nu sa fie palindrom)
+					-daca cele doua capete ale Stringului(litera din stanga si cea din dreapta) sunt egale,pur si simplu facem eliminarea lor si 						continuam verificarea pe substringul ramas
+					-daca nu sunt egale se calculeaza distanta minima din partea stanga,pana la primul caracter egal cu capatul dreapta(acest 						lucru se face pentru a determina numarul de miscari necesar deplasarii dublurii caracterului din dreapta,in partea 						stanga,pentru a avea capetele egale,apoi eliminarea lor)
+					-se calculeaza si distanta minima din partea dreapta,pana la primul caracter egal cu capatul din stanga(acest lucru se face 
+					pentru a determina numarul de miscari necesar deplasarii dublurii caracterului din stanga,in partea dreapta,pentru a avea 
+					capetele egale,apoi eliminarea lor)
+					-in cazul in care nu se gasea unul din caracterele de mai sus,inseamna ca numarul de miscari ar fi infinit(deoarece nu exista),
+					de aceea asignez acestui caz o valoarea relativ mare (10 000)
+					-se trece la compararea distantelor:-daca distantele sunt amandoua egale cu 10 000,inseamna ca am gasit 2 litere care nu au
+					dubluri,ceea ce inseamna ca nu putem avea un palindrom si returnam -1(caz particular)
+									   -daca distanta de la stanga este <= decat distanta de la dreapta inseamna ca vom face mutari
+					pentru a aduce caracterul gasit in String(egal cu capatul din dreapta) pe prima pozitie,ceea ce face ca numarul minim de mutari
+					sa fie egal cu insusi distanta(mutarea nu se realizeaza efectiv pe lista,ci se face direct eliminarea acestui caracter si 
+					al celui din extrema dreapta,tinandu-se cont doar de numarul minim de mutari care se adauga la contor)
+									    -daca distanta de la dreapta este > decat distanta de la stanga inseamna ca vom face mutari
+					pentru a aduce caracterul gasit in String(egal cu capatul din stanga) pe ultima pozitie,ceea ce face ca numarul minim de mutari
+					sa fie egal cu insusi distanta(mutarea nu se realizeaza efectiv pe lista,ci se face direct eliminarea acestui carecter si
+					al celui din extrema stanga,tinandu-se cont doar de numarul minim de mutari care se adauga la contor 
+					-cand ajungem la final(cazul de iesire de mai sus) se returneaza contorul
+	
+	3)Scrierea in fisier am facut-o folosind PrintWriter pentru a putea sa afisez cu usurinta un intreg
+		-cand se apela metoda check(vezi mai sus),rezultatul se insera intr-o lista de rezultate(intregi),fiecare element de pe pozitia i reprezentand 
+		solutia pentru String-ul i citit din fisier
+		-se afiseaza pe cate o linie separata aceste rezultate
+
+	COMPLEXITATE: O (N^2)
+
+PROBLEMA 2:
+	Pentru rezolvarea acestei probleme,mai intai a trebuie sa fac citirea din fisier,dupa care sa construiesc metoda care facea rezolvarea efectiva a cerintei
+si apoi sa scriu rezultatul in alt fisier.Pentru indeplinirea acestor task-uri am urmat acesti pasi:
+	1)Citirea din fisier-la fel ca la problema anterioara,citirea din fisier am facut-o folosind BufferedReader
+			    -mai intai citeam numarul de variante si dimensiunea fiecarei variante
+			    -dupa aceea,pentru fiecare linie citita(varianta),faceam split dupa " " pentru a putea lua fiecare "litera" din aceasta varianta
+			    -fiecare litera era prelucrata iar existenta ei era marcata in MATRICEA DE APARITII
+						-am folosit o matrice de aparitii(vezi explicatiile 1 si 2) care memora existenta(prin 1) sau non-existenta 							(prin 0) a unei litere care se gasea pe coloana "j" a fiecarei variante
+						-liniile matricii reprezentau coloanele variantelor(pozitiile literelor in variante),iar coloanele matricii
+						reprezentau valorile posibile pe care le putea lua o "litera"(codurile ASCII intre 0-255)
+						-cand o litera era gasita pe o anumita pozitie "j" (coloana) in varianta sa,se insera pe linia "j" si pe 							coloana=valoarea literei numarul 1 care marca existenta valorii pe acea coloana	
+			    -se citeste dimensiunea cuvantului initial
+			    -se insereaza valorile initiale intr-o lista de caractere
+	
+	2)Scrierea in fisier-pentru aceasta am folosit PrintWriter
+			    -apelam metoda "eval"(care calcula numarul minim de modificari asupra sirului) si memoram rezultatul intr-o variabila
+			    -scriam variabila intr-un fisier
+
+	3)Rezolvarea efectiva a cerintei-pentru acest lucru am consultat algoritmul de la link-ul http://www.geeksforgeeks.org/dynamic-programming-set-5-edit-distance/
+					-am construi metoda "eval" care primeste ca parametrii matricea de aparitii,lista cu valorile initiale,numarul de variante,
+					dimensiunea unei variante si dimensiunea initiala
+					-initializem matricea pe care aplicam algoritmul de programare dinamica
+					-algoritmul se executa pentru fiecare coloana de "litere" din valori si pentru fiecare "litera" din cuvantul initial
+					-cazurile de baza:-daca ma aflam pe linia "0",insemna ca trebuie sa fac "j" adaugari(pentru ca variantele ar fi avut 						dimensiunea "j",iar string-ul initial ar fi avut dimensiunea 0)
+							  -daca ma aflam pe coloana "0",insemna ca trebuie sa fac "i" stergeri(pentru ca variantele ar fi avut
+							dimensiunea 0,iar stringul dimensiunea "i"
+					-daca nu eram pe un caz de baza verificam existenta in matricea de aparitii a valorii initiale pe care ma aflam in starea 						curenta(cautam pe linia matricii (i-1)---care reprezinta coloane de "litere" din variante (i-1),daca exista 1 sau 0 in
+					dreptul valorii caracterului curent(coloana asociata acelei valori))
+					-daca se gasea,insemna ca nu trebuie sa facem nicio modificare si astfel costul din aceasta stare este acelasi cu costul din
+					starea precedenta
+					-daca nu se gasea,insemna ca trebuie adaugat costul 1 (costul pt adaugare,modificare,stergere) la valoarea minima dintre 						costul pe care ar fi avut-o starea curenta daca se stergea,adauga sau modifica un element
+					-calculul minimului se realizeaza cu functia min care compara 3 valori si o returneaza pe cea mai mica
+					-dupa compararea tuturor coloanelor si a valorilor initiale,algoritmul intoarce costul tota obtinut care se afla pe ultima
+					pozitie din matrice
+
+	COMPLEXITATE O (N^2)
+
+1----Am incercat sa construiesc nu o matrice de aparitii,ci o matrice de variante in care fiecare linie reprezenta o varianta citita din fisier.Cautarea unui anumit element pe o anumita coloana am incerca sa o fac folosind cautarea Binara,insa s-a dovedit ca acest lucru cauza un timp destul de mare(banuiesc ca din cauza 
+necesitatii sortarii coloanei inainte de prelucrare) si un test picat
+
+2----La fel ca si la 1,cu o matrice de variante,insa de data aceasta folosind o cautare liniara direct pe coloana.De data aceasta nu mai pica un singur test,ci 3 teste,tot din cauza timpului.Asa ca am ales aceasta abordare cu matrice de aparitii din cauza complexitatii cautarii(O(1)-doar extragem elementul,fata de O(n) la cautarea normala sau O(log n) la cautarea Binara). 
+					ar fi avut-o 
+	
+
+
+
+
